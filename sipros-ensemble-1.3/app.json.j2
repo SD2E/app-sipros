@@ -1,0 +1,96 @@
+{
+  "name": "{{ agave.username }}-{{ app.name }}",
+  "version": "{{ app.version }}",
+  "executionType": "HPC",
+  "executionSystem": "hpc-tacc-wrangler-{{ agave.username }}",
+  "parallelism": "SERIAL",
+  "deploymentPath": "{{ agave.username }}/apps/{{ app.bundle }}",
+  "deploymentSystem": "data-sd2e-projects-users",
+  "defaultProcessorsPerNode": 1,
+  "defaultNodeCount": 1,
+  "defaultQueue": "normal",
+  "label": "Sipros-Ensemble",
+  "modules": ["load tacc-singularity"],
+  "shortDescription": "Peptide and protein identification in shotgun meta/proteomics",
+  "templatePath": "runner-template.sh",
+  "testPath": "tester.sh",
+  "inputs": [
+    {
+      "id": "configuration_file",
+      "value": {
+        "default": "agave://data-tacc-work-wallen/sd2e/sample/sipros/VN2DLC_Sipros_TACC.cfg",
+        "required": true,
+        "visible": true
+        },
+        "details": {
+          "description": "Sipros configuration file"
+        }
+    },
+    {
+      "id": "ms2_file",
+      "value": {
+        "default": "agave://data-tacc-work-wallen/sd2e/sample/sipros/JH_UAST_6prot5.ms2",
+        "required": false,
+        "visible": true
+        },
+        "details": {
+          "description": "MS2 file required if single input"
+        }
+    },
+    {
+      "id": "working_directory",
+      "value": {
+        "default": null,
+        "required": false,
+        "visible": true
+        },
+        "details": {
+          "description": "Working directory required if multiple inputs"
+        }
+    },
+    {
+      "id": "fasta_file",
+      "value": {
+        "default": "agave://data-tacc-work-wallen/sd2e/sample/sipros/VN_UniProt_FRC_0007.fasta",
+        "required": false,
+        "visible": true
+        },
+        "details": {
+          "description": "File name of the fasta database"
+        }
+    }
+  ],
+  "parameters": [
+    {
+      "id": "single_or_multi",
+      "value": {
+        "default": "single",
+        "description": "specify single or multi for single or multiple input files",
+        "type": "string",
+        "visible": true,
+        "required": true
+      }
+    },
+    {
+      "id": "silence_output",
+      "value": {
+        "default": false,
+        "description": "if true, silence standard output",
+        "type": "flag",
+        "visible": true,
+        "required": false
+      }
+    },
+    {
+      "id": "CONTAINER_IMAGE",
+      "value": {
+        "default": "{{ docker.organization }}/{{ docker.repo }}:{{ docker.tag }}",
+        "description": "Container Image. Do not edit.",
+        "type": "string",
+        "visible": false,
+        "required": true
+      }
+    }
+  ],
+  "outputs": []
+}
